@@ -6,16 +6,18 @@ import Ingrediente from "@src/models/Ingrediente";
 
 async function getAllIngredientes(_: IReq, res: IRes) {
     const ingredientes = await IngredienteService.getAllIngredientes();
-    return res.status(HttpStatusCodes.OK).json( ingredientes );
+    return res.status(HttpStatusCodes.OK).json(ingredientes);
   }
   
 async function getOneIngrediente(req: IReq, res: IRes) {
-    const id = +req.params.id;
+    const id = req.params.id;
     const ingrediente = await IngredienteService.getOneIngrediente(id);
+
     if (!ingrediente) {
       return res.status(HttpStatusCodes.NOT_FOUND).end();
     }
-    return res.status(HttpStatusCodes.OK).json({ ingrediente });
+
+    return res.status(HttpStatusCodes.OK).json(ingrediente);
 }
   
 async function addIngrediente(req: IReq<{ingrediente: IIngrediente}>, res: IRes) {
@@ -29,15 +31,19 @@ async function addIngrediente(req: IReq<{ingrediente: IIngrediente}>, res: IRes)
     return res.status(HttpStatusCodes.CREATED).end();
 }
   
-async function updateIngrediente(req: IReq<{ ingredientes: IIngrediente }>, res: IRes) {
-    const id =+req.params.id
-    const { ingredientes } = req.body;
-    await IngredienteService.updateIngrediente(id,ingredientes);
+async function updateIngrediente(req: IReq<{ ingrediente: IIngrediente }>, res: IRes) {
+    const id = req.params.id
+    if (!Ingrediente.isIngrediente(req.body)){
+        return res.status(HttpStatusCodes.BAD_REQUEST).end();
+    }
+    
+    const ingrediente = Ingrediente.from(req.body);
+    await IngredienteService.updateIngrediente(id, ingrediente);
     return res.status(HttpStatusCodes.OK).end();
 }
   
 async function deleteIngrediente(req: IReq, res: IRes) {
-    const id = +req.params.id;
+    const id = req.params.id;
     await IngredienteService.deleteIngrediente(id);
     return res.status(HttpStatusCodes.OK).end();
 }

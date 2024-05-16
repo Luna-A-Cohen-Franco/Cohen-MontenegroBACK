@@ -1,10 +1,8 @@
-import { IIngrediente } from "./Ingrediente";
-
 export interface IPlato {
   nombre: string;
   descripcion: string;
   tipo: string;
-  ingredientes: IIngrediente[];
+  ingredientes: Map<string, number>;
   receta: string;
   foto: string;
 }
@@ -13,7 +11,7 @@ function new_(
   nombre: string,
   descripcion: string,
   tipo: string,
-  ingredientes: IIngrediente[],
+  ingredientes: Map<string, number>,
   receta: string,
   foto: string,
 ): IPlato {

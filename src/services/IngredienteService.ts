@@ -7,44 +7,19 @@ function getAllIngredientes(): Promise<IIngrediente[]> {
   return IngredienteRepo.getAllIngredientes();
 }
   
-async function getOneIngrediente(id: number): Promise<IIngrediente | null> {
-  const persists = await IngredienteRepo.persistsIngrediente(id);
-  if (!persists) {
-    throw new RouteError(
-      HttpStatusCodes.NOT_FOUND,
-      ""
-    );
-  }
-  
+async function getOneIngrediente(id: string): Promise<IIngrediente | null> {
   return IngredienteRepo.getOneIngrediente(id);
 }
   
-function addIngrediente(ingrediente: IIngrediente): Promise<void> {
+function addIngrediente(ingrediente: IIngrediente): Promise<boolean> {
   return IngredienteRepo.addIngrediente(ingrediente);
 }
   
-async function updateIngrediente(id: number, ingrediente: IIngrediente): Promise<void> {
-  const persists = await IngredienteRepo.persistsIngrediente(id);
-  if (!persists) {
-    if (!persists) {
-      throw new RouteError(
-        HttpStatusCodes.NOT_FOUND,
-        ""
-      );
-    }
-  }
+async function updateIngrediente(id: string, ingrediente: IIngrediente): Promise<boolean> {
   return IngredienteRepo.updateIngrediente(id, ingrediente);
 }
   
-async function deleteIngrediente(id: number): Promise<void> {
-  const persists = await IngredienteRepo.persistsIngrediente(id);
-  if (!persists) {
-    throw new RouteError(
-      HttpStatusCodes.NOT_FOUND,
-      ""
-    );
-  }
-  
+async function deleteIngrediente(id: string): Promise<boolean> {
   return IngredienteRepo.deleteIngrediente(id);
 }
 
