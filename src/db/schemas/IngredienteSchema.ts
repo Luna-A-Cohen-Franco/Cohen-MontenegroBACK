@@ -1,5 +1,3 @@
-
-import { IIngrediente } from "@src/models/Ingrediente";
 import mongoose from "mongoose";
 
 const ingredienteSchema = new mongoose.Schema({
