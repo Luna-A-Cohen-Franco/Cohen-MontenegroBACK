@@ -1,11 +1,24 @@
 import { IPlato } from "@src/models/Plato";
 import Plato from "@src/db/models/PlatoModel";
 import PlatoMethods from "@src/models/Plato"
+import PlatoIdVParse from "@src/models/PlatoIdV"
+
 async function persistsPlato(id: string): Promise<boolean> {
-    
-    return new Promise((resolve, reject) => {
-      resolve(true);
-  });
+    try {
+        const fetchPlato: object | null = await Plato.findById(id).exec()
+        if (fetchPlato === null){
+          return false;
+        }
+        
+        if (typeof fetchPlato == "object" && PlatoMethods.isPlato(fetchPlato as object)){
+          return true;
+        }
+        
+        return false;
+    } catch (error) {
+        console.error('Error retrieving plato:', error);
+        throw error;
+    }
 }
   
 async function getAllPlatos(): Promise<IPlato[]> {
@@ -15,9 +28,10 @@ async function getAllPlatos(): Promise<IPlato[]> {
       if (platos.length === 0){
         return []
       }
+      console.log(platos)
       return platos
         .filter(PlatoMethods.isPlato)
-        .map(PlatoMethods.from);
+        .map(PlatoIdVParse.from);
     } catch (error) {
         console.error('Error retrieving plato:', error);
         throw error;
@@ -32,7 +46,7 @@ async function getOnePlato(id: string): Promise<IPlato | null> {
         }
         
         if (typeof fetchPlato == "object" && PlatoMethods.isPlato(fetchPlato as object)){
-          return PlatoMethods.from(fetchPlato as object)
+          return PlatoIdVParse.from(fetchPlato as object)
         }
         
         return null
@@ -52,14 +66,13 @@ async function addPlato(plato: IPlato): Promise<boolean> {
         throw err;
     }
 }
-  
+
 async function updatePlato(id: string, plato: IPlato): Promise<boolean> {
     try{
-        //const plato = await Plato.findOneAndUpdate(
-          //  { _id: id }, 
-           // plato,
-           // { new: true }
-        //).exec();*/
+        await Plato.findOneAndUpdate(
+            { _id: id }, 
+            plato
+        ).exec();
 
         return true;
     } catch (err) {

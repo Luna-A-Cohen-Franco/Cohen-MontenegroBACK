@@ -1,5 +1,3 @@
-import { KeyObject } from "crypto";
-
 export interface IPlato {
   nombre: string;
   descripcion: string;
@@ -7,8 +5,6 @@ export interface IPlato {
   ingredientes: Map<string, number>;
   receta: string;
   foto: string;
-  _id?: string | null,
-  __v?: number | null,
 }
 
 function new_(
@@ -18,8 +14,6 @@ function new_(
   ingredientes: Map<string, number>,
   receta: string,
   foto: string,
-  _id: string | null,
-  __v: number | null,
 ): IPlato {
   return {
     nombre: nombre,
@@ -28,8 +22,6 @@ function new_(
     ingredientes: ingredientes,
     receta: receta,
     foto: foto,
-    _id: _id,
-    __v: __v
   };
 }
 
@@ -40,8 +32,7 @@ function from(param: object): IPlato {
   }
 
   const p = param as IPlato;
-  return new_(p.nombre, p.descripcion, p.tipo, p.ingredientes, p.receta, p.foto, p._id ?? null,
-    p.__v ?? null);
+  return new_(p.nombre, p.descripcion, p.tipo, p.ingredientes, p.receta, p.foto);
 }
 
 function isPlato(obj: object): boolean {

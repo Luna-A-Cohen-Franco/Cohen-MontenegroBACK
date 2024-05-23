@@ -2,7 +2,7 @@ import HttpStatusCodes from "@src/constants/HttpStatusCodes";
 import { IIngrediente } from "@src/models/Ingrediente";
 import IngredienteService from "@src/services/IngredienteService";
 import { IReq, IRes } from "./types/types";
-import Ingrediente from "@src/models/Ingrediente";
+import IngredienteMethods from "@src/models/Ingrediente";
 
 async function getAllIngredientes(_: IReq, res: IRes) {
     const ingredientes = await IngredienteService.getAllIngredientes();
@@ -21,11 +21,11 @@ async function getOneIngrediente(req: IReq, res: IRes) {
 }
   
 async function addIngrediente(req: IReq<{ingrediente: IIngrediente}>, res: IRes) {
-    if (!Ingrediente.isIngrediente(req.body)){
+    if (!IngredienteMethods.isIngrediente(req.body)){
         return res.status(HttpStatusCodes.BAD_REQUEST).end();
     }
     
-    const ingrediente = Ingrediente.from(req.body);
+    const ingrediente = IngredienteMethods.from(req.body);
     
     await IngredienteService.addIngrediente(ingrediente);
     return res.status(HttpStatusCodes.CREATED).end();
@@ -33,11 +33,11 @@ async function addIngrediente(req: IReq<{ingrediente: IIngrediente}>, res: IRes)
   
 async function updateIngrediente(req: IReq<{ ingrediente: IIngrediente }>, res: IRes) {
     const id = req.params.id
-    if (!Ingrediente.isIngrediente(req.body)){
+    if (!IngredienteMethods.isIngrediente(req.body)){
         return res.status(HttpStatusCodes.BAD_REQUEST).end();
     }
     
-    const ingrediente = Ingrediente.from(req.body);
+    const ingrediente = IngredienteMethods.from(req.body);
     await IngredienteService.updateIngrediente(id, ingrediente);
     return res.status(HttpStatusCodes.OK).end();
 }

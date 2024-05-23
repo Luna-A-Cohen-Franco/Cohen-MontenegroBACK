@@ -1,6 +1,4 @@
-import { IPlato } from "@src/models/Plato";
 import mongoose from "mongoose";
-import ingredienteSchema from "./IngredienteSchema";
 
 const platoSchema = new mongoose.Schema({
     nombre: { type: String, required: true },

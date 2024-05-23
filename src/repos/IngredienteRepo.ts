@@ -1,10 +1,13 @@
 import { IIngrediente } from "@src/models/Ingrediente";
 import Ingrediente from "@src/db/models/IngredienteModel";
 async function persistsIngrediente(id: string): Promise<boolean> {
-    
-    return new Promise((resolve, reject) => {
-      resolve(true);
-  });
+    try {
+        const plato: IIngrediente | null = await Ingrediente.findById(id).exec()
+        return plato != null;
+    } catch (error) {
+        console.error('Error retrieving ingrediente:', error);
+        throw error;
+    }
 }
   
 async function getAllIngredientes(): Promise<IIngrediente[]> {
@@ -20,7 +23,6 @@ async function getAllIngredientes(): Promise<IIngrediente[]> {
 async function getOneIngrediente(id: string): Promise<IIngrediente | null> {
     try {
         const plato: IIngrediente | null = await Ingrediente.findById(id).exec()
-
         return plato;
     } catch (error) {
         console.error('Error retrieving ingrediente:', error);
